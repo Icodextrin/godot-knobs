@@ -2,6 +2,7 @@
 class_name KnobInteraction extends Area3D
 
 signal value_changed(value: float)
+signal snap_changed(value: float)
 
 @export var knob_sensitivity: float = 0.01
 @export var knob_min_val: float = 0.0
@@ -109,6 +110,7 @@ func calculate_value() -> void:
 			value = remap(current_rotation, angle_limits.min_angle, angle_limits.max_angle, knob_min_val, knob_max_val)
 	elif snapping:
 		value = snap_points_radians.find(current_snap_rotation)
+		snap_changed.emit(value)
 	else:
 		value = clamp(current_rotation, knob_min_val, knob_max_val)
 
