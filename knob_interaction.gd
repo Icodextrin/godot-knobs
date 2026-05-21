@@ -59,7 +59,10 @@ func rotate_knob(mouse_y_delta: float) -> void:
 		rotation_delta = -rotation_delta
 
 	if angle_limits:
-		apply_clamped_rotation(rotation_delta, angle_limits.min_angle, angle_limits.max_angle)
+		if invert_direction:
+			apply_clamped_rotation(rotation_delta, -angle_limits.max_angle, angle_limits.min_angle)
+		else:
+			apply_clamped_rotation(rotation_delta, angle_limits.min_angle, angle_limits.max_angle)
 		calculate_value()
 	elif snapping:
 		var min_angle: float = snap_points_radians.min()
@@ -101,7 +104,7 @@ func find_closest_snap_point(actual_rotation: float) -> float:
 func calculate_value() -> void:
 	if angle_limits:
 		if invert_direction:
-			value = remap(current_rotation, angle_limits.min_angle, angle_limits.max_angle, knob_max_val, knob_min_val)
+			value = remap(current_rotation, angle_limits.min_angle, angle_limits.max_angle, knob_min_val, -knob_max_val)
 		else:
 			value = remap(current_rotation, angle_limits.min_angle, angle_limits.max_angle, knob_min_val, knob_max_val)
 	elif snapping:
