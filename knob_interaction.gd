@@ -6,6 +6,7 @@ signal value_changed(value: float)
 @export var knob_sensitivity: float = 0.01
 @export var knob_min_val: float = 0.0
 @export var knob_max_val: float = 11.0
+@export var invert_direction: bool = false
 
 @export_group("Angle Limits")
 @export var angle_limits: KnobAngleLimitsConfig
@@ -54,6 +55,8 @@ func _on_input_event(_camera: Node, event: InputEvent, _event_position: Vector3,
 
 func rotate_knob(mouse_y_delta: float) -> void:
 	var rotation_delta: float = mouse_y_delta * knob_sensitivity
+	if invert_direction:
+		rotation_delta = -rotation_delta
 
 	if angle_limits:
 		apply_clamped_rotation(rotation_delta, angle_limits.min_angle, angle_limits.max_angle)
